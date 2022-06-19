@@ -1,0 +1,10 @@
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info
+.DS_Store
+.vscode
+.terraform.lock.hcl
+secrets.hcl
+secret.tfvars
+.terraform/
+.terragrunt-cache/

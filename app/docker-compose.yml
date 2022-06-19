@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  server:
+    build: server/
+    container_name: server
+    ports:
+      - 4000:4000
+  client:
+    build: ./client
+    container_name: client
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - 80:80
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - server
