@@ -44,6 +44,8 @@ module "codebuild" {
 
   account_id              = var.account_id
   app_name                = var.app_name
+  app_image_1             = var.app_image_1
+  app_image_2             = var.app_image_2
   region                  = var.region
   env                     = var.env
   vpc_id                  = module.vpc.vpc_id
