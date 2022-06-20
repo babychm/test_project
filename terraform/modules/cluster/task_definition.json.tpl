@@ -13,7 +13,9 @@
       }
     ],
     "environment": []
-  },
+  }
+]
+[
   {
     "essential": true,
     "memory": 256,
