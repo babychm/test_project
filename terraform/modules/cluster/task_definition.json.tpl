@@ -9,7 +9,7 @@
       {
         "hostPort": 0,
         "protocol": "tcp",
-        "containerPort": 5000
+        "containerPort": 80
       }
     ],
     "environment": []

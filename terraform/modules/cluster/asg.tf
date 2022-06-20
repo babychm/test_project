@@ -1,8 +1,8 @@
 
 resource "aws_autoscaling_group" "demo_asg" {
   desired_capacity    = 2
-  max_size            = 2
-  min_size            = 2
+  max_size            = 4
+  min_size            = 1
   target_group_arns   = [aws_alb_target_group.tf_tg.arn]
   vpc_zone_identifier = var.private_subnets_ids
   launch_template {

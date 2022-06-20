@@ -12,6 +12,8 @@ module "cluster" {
   source              = "../modules/cluster"
   app_name            = var.app_name
   app_tag             = var.app_tag
+  app_image_1         = var.app_image_1
+  app_image_2         = var.app_image_2
   env                 = var.env
   region              = var.region
   vpc_id              = module.vpc.vpc_id

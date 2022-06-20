@@ -8,11 +8,11 @@ data "aws_iam_policy_document" "ecs_agent" {
   }
 }
 resource "aws_iam_role" "ecs_agent" {
-  name               = "${var.env}-ecs-agent"
+  name               = "${var.app_name}-${var.env}-ecs-agent"
   assume_role_policy = data.aws_iam_policy_document.ecs_agent.json
 }
 resource "aws_iam_instance_profile" "ecs_agent" {
-  name = "${var.env}-ecs-agent"
+  name = "${var.app_name}-${var.env}-ecs-agent"
   role = aws_iam_role.ecs_agent.name
 }
 resource "aws_iam_role_policy" "ecs_agent" {

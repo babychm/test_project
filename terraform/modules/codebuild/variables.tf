@@ -6,6 +6,14 @@ variable "app_name" {
   type = string
 }
 
+variable "app_image_1" {
+  type = string
+}
+
+variable "app_image_2" {
+  type = string
+}
+
 variable "region" {
   type = string
 }

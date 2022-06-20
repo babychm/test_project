@@ -3,11 +3,13 @@ services:
   server:
     build: server/
     container_name: server
+    image: fckurethn/demo-server:v2
     ports:
       - 4000:4000
   client:
     build: ./client
     container_name: client
+    image: fckurethn/demo-client:v2
     volumes:
       - '.:/app'
       - '/app/node_modules'

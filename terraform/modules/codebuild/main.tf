@@ -15,12 +15,12 @@ EOF
   }
 }
 
-resource "aws_s3_bucket" "demo-pepe-frog" {
-  bucket = "${var.env}-demo-pepe-frog"
+resource "aws_s3_bucket" "demo-testdemo" {
+  bucket = "${var.env}-demo-testdemo"
 }
 
 resource "aws_s3_bucket_acl" "demo" {
-  bucket = aws_s3_bucket.demo-pepe-frog.id
+  bucket = aws_s3_bucket.demo-testdemo.id
   acl    = "private"
 }
 
@@ -42,7 +42,7 @@ resource "aws_codebuild_project" "demo-pepe" {
 
   cache {
     type     = "S3"
-    location = aws_s3_bucket.demo-pepe-frog.bucket
+    location = aws_s3_bucket.demo-testdemo.bucket
   }
 
   environment {

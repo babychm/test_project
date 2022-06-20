@@ -12,6 +12,14 @@ variable "app_tag" {
   type = string
 }
 
+variable "app_image_1" {
+  type = string
+}
+
+variable "app_image_2" {
+  type = string
+}
+
 variable "account_id" {
   type = string
 }

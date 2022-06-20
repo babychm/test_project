@@ -1,13 +1,13 @@
 
 resource "aws_alb" "tf_alb" {
-  name               = "${var.env}-alb"
+  name               = "${var.app_name}-${var.env}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = var.public_subnets_ids
 
   tags = {
-    Name = "${var.env}-ALB"
+    Name = "${var.app_name}-${var.env}-ALB"
   }
 
 }
@@ -75,6 +75,6 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
-    Name = "${var.env} ALB security group "
+    Name = "${var.app_name} ${var.env} ALB security group "
   }
 }
