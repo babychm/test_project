@@ -3,14 +3,14 @@ data "aws_availability_zones" "available" {}
 resource "aws_vpc" "tf_vpc" {
   cidr_block = var.cidr
   tags = {
-    Name = "${var.env}-vpc"
+    Name = "${var.app_name}-${var.env}-vpc"
   }
 }
 
 resource "aws_internet_gateway" "tf_igw" {
   vpc_id = aws_vpc.tf_vpc.id
   tags = {
-    Name = "${var.env}-gw"
+    Name = "${var.app_name}-${var.env}-gw"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
   availability_zone       = each.value["az"]
   map_public_ip_on_launch = true
   tags = {
-    Name = "${var.env}-public-subnet"
+    Name = "${var.app_name}-${var.env}-public-subnet"
   }
 
 }
@@ -36,7 +36,7 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.tf_igw.id
   }
   tags = {
-    Name = "${var.env}-public-rt"
+    Name = "${var.app_name}-${var.env}-public-rt"
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_eip" "nat_eip" {
 
   vpc = true
   tags = {
-    Name = "${var.env}-eip"
+    Name = "${var.app_name}-${var.env}-eip"
   }
 }
 
@@ -63,7 +63,9 @@ resource "aws_nat_gateway" "nat" {
 
   allocation_id = aws_eip.nat_eip[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
-
+  tags = {
+    Name = "${var.app_name}-${var.env}-nat-gateway"
+  }
 }
 
 resource "aws_subnet" "private" {
@@ -73,7 +75,7 @@ resource "aws_subnet" "private" {
   cidr_block        = each.value["cidr"]
   availability_zone = each.value["az"]
   tags = {
-    Name = "${var.env}-private-subnet"
+    Name = "${var.app_name}-${var.env}-private-subnet"
   }
 }
 
@@ -86,7 +88,7 @@ resource "aws_route_table" "private" {
     gateway_id = aws_nat_gateway.nat[each.key].id
   }
   tags = {
-    Name = "${var.env}-private-rt"
+    Name = "${var.app_name}-${var.env}-private-rt"
   }
 }
 
