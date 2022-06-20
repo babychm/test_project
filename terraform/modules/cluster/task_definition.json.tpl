@@ -14,7 +14,7 @@
     ],
     "environment": []
   }
-]
+],
 [
   {
     "essential": true,
