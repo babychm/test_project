@@ -11,6 +11,14 @@ variable "app_tag" {
   default = "v1"
 }
 
+variable "app_image_1" {
+  type = string
+}
+
+variable "app_image_2" {
+  type = string
+}
+
 variable "github_repo" {
   type = string
 }

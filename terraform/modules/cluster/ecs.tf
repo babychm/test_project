@@ -23,6 +23,7 @@ data "template_file" "task_definition_template" {
   template = templatefile("../modules/cluster/task_definition.json.tpl", {
     ecr_url     = aws_ecr_repository.demo.repository_url,
     app_tag     = var.app_tag,
+    app_name    = var.app_name
     app_image_1 = var.app_image_1
     app_image_2 = var.app_image_2
     env         = var.env

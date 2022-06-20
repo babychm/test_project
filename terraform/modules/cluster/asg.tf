@@ -42,7 +42,7 @@ EOF
     resource_type = "instance"
 
     tags = {
-      Name = "${app_name}-${var.env}-instance"
+      Name = "${var.app_name}-${var.env}-instance"
     }
   }
 }

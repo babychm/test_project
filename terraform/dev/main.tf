@@ -31,6 +31,8 @@ module "init-build" {
   region         = var.region
   github_repo    = var.github_repo
   app_tag        = var.app_tag
+  app_image_1    = var.app_image_1
+  app_image_2    = var.app_image_2
   env            = var.env
   registry_id    = module.cluster.registry_id
   repository_url = module.cluster.repository_url
@@ -43,6 +45,8 @@ module "codebuild" {
 
   account_id              = var.account_id
   app_name                = var.app_name
+  app_image_1             = var.app_image_1
+  app_image_2             = var.app_image_2
   region                  = var.region
   env                     = var.env
   vpc_id                  = module.vpc.vpc_id
