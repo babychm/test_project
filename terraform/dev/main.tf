@@ -1,6 +1,7 @@
 module "vpc" {
   source = "../modules/vpc"
 
+  app_name        = var.app_name
   region          = var.region
   env             = var.env
   cidr            = var.cidr
