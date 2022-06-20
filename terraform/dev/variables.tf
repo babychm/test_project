@@ -55,11 +55,6 @@ variable "buildspec" {
   default = ""
 }
 
-variable "app_name" {
-  type    = string
-  default = ""
-}
-
 variable "instance_type" {
   type    = string
   default = ""
