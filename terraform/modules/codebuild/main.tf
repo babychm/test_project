@@ -30,9 +30,9 @@ resource "aws_codebuild_source_credential" "this" {
   token       = var.github_oauth_token
 }
 
-resource "aws_codebuild_project" "demo-pepe" {
-  name          = "${var.env}-pepe"
-  description   = "${var.env}_codebuild_project"
+resource "aws_codebuild_project" "demo" {
+  name          = "${var.app_name}-${var.env}-codebuild"
+  description   = "${var.app_name}-${var.env}_codebuild_project"
   build_timeout = "5"
   service_role  = aws_iam_role.codebuild_role.arn
 
@@ -57,12 +57,12 @@ resource "aws_codebuild_project" "demo-pepe" {
     }
 
     environment_variable {
-      name = "IMAGE_1"
+      name  = "IMAGE_1"
       value = var.app_image_1
     }
 
     environment_variable {
-      name = "IMAGE_2"
+      name  = "IMAGE_2"
       value = var.app_image_2
     }
 
@@ -114,7 +114,7 @@ resource "aws_codebuild_project" "demo-pepe" {
 }
 
 resource "aws_codebuild_webhook" "demo_webhook" {
-  project_name = aws_codebuild_project.demo-pepe.name
+  project_name = aws_codebuild_project.demo.name
 
   filter_group {
     filter {
