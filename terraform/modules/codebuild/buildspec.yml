@@ -9,17 +9,24 @@ phases:
       - REPOSITORY_URI=${ECR_APP_URL}
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - TIMESTAMP=$(TZ="Europe/Zaporozhye" date +"%d.%m.%y_%H.%M")
-      - IMAGE_TAG=${ENV}-${CODEBUILD_RESOLVED_SOURCE_VERSION}-${TIMESTAMP}
+      - NEW_IMAGE_TAG=${ENV}-${CODEBUILD_RESOLVED_SOURCE_VERSION}-${TIMESTAMP}
       - cd /usr/local/bin
       - curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
       - unzip -o terraform.zip
       - chmod +x terraform
+      - docker-compose version
+      - sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+      - sudo chmod +x /usr/local/bin/docker-compose
+      - docker-compose version
       - pip install jq
-      - echo "Getting existing tag"
+      - echo "Getting existing tags"
       - export SERVICE_ARN=$(aws ecs list-services --cluster ${APP_NAME}-${ENV}-cluster | jq -r .serviceArns[])
       - export TASKDEF_ARN=$(aws ecs describe-services --cluster ${APP_NAME}-${ENV}-cluster --service ${SERVICE_ARN} | jq -r .services[].taskDefinition)
-      - export EXISTING_TAG=$(aws ecs describe-task-definition --task-definition ${TASKDEF_ARN} | jq -r .taskDefinition.containerDefinitions[].image | tr ':' ' ' | awk '{print $2}')
-      - echo "Current version is ${EXISTING_TAG}"
+      - export EXISTING_TAG_1=$(aws ecs describe-task-definition --task-definition ${TASKDEF_ARN} | jq -r .taskDefinition.containerDefinitions[0].image | tr ':' ' ' | awk '{print $2}')
+      - export EXISTING_TAG_2=$(aws ecs describe-task-definition --task-definition ${TASKDEF_ARN} | jq -r .taskDefinition.containerDefinitions[1].image | tr ':' ' ' | awk '{print $2}')
+      - echo "Current versions is"
+      - echo "${EXISTING_TAG_1}"
+      - echo "and ${EXISTING_TAG_2}"
   build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -27,12 +34,17 @@ phases:
       - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG "$CODEBUILD_SRC_DIR"/app
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - cd  ./test_project/app
+      - sed -r "s/image:.*server.*/image:\ ${REPOSITORY_URI}:${IMAGE_1}-${NEW_IMAGE_TAG}/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
+      - sed -r "s/image:.*client.*/image:\ ${REPOSITORY_URI}:${IMAGE_2}-${NEW_IMAGE_TAG}/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
+      - docker-compose build
+      - docker-compose push
+
+
   post_build:
     commands:
       - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_DEFINITION_FAMILY" --region "$AWS_REGION")
-      - NEW_TASK_DEFINTIION=$(echo $TASK_DEFINITION | jq --arg IMAGE "image:tag" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
+      - NEW_TASK_DEFINTIION=$(echo $TASK_DEFINITION | jq --arg IMAGE "image:tag" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | .containerDefinitions[1].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
       - NEW_TASK_INFO=$(aws ecs register-task-definition --region "$AWS_REGION" --cli-input-json "$NEW_TASK_DEFINTIION")
       - NEW_REVISION=$(echo $NEW_TASK_INFO | jq '.taskDefinition.revision')
       - aws ecs update-service --cluster ${TASK_DEFINITION_CLUSTER} --service ${TASK_DEFINITION_SERVICE} --task-definition ${TASK_DEFINITION_FAMILY}:${NEW_REVISION}
@@ -40,5 +52,5 @@ phases:
       - echo "Updating Infrastructure..."
       - cd "$CODEBUILD_SRC_DIR"/terraform/${ENV}
       - terraform init
-      - terraform plan -target=module.cluster -var="app_tag=${TAG}"
-      - terraform apply -target=module.cluster -var="app_tag=${IMAGE_TAG}" --auto-approve
+      - terraform plan -target=module.cluster -var="app_tag=${NEW_IMAGE_TAG}"
+      - terraform apply -target=module.cluster -var="app_tag=${NEW_IMAGE_TAG}" --auto-approve

@@ -55,6 +55,17 @@ resource "aws_codebuild_project" "demo-pepe" {
       name  = "ENV"
       value = var.env
     }
+
+    environment_variable {
+      name = "IMAGE_1"
+      value = var.app_image_1
+    }
+
+    environment_variable {
+      name = "IMAGE_2"
+      value = var.app_image_2
+    }
+
     environment_variable {
       name  = "AWS_REGION"
       value = var.region

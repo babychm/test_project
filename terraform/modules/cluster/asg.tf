@@ -22,7 +22,7 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_launch_template" "demo_asg" {
-  name = "${var.env}-ASG"
+  name = "${var.app_name}-${var.env}-ASG"
 
   vpc_security_group_ids               = [aws_security_group.allowed_ports.id]
   image_id                             = data.aws_ami.amazon_linux.id
@@ -31,7 +31,7 @@ resource "aws_launch_template" "demo_asg" {
   key_name                             = "aws-main"
   user_data = "${base64encode(<<EOF
 #!/bin/bash
-echo ECS_CLUSTER=${var.env}-cluster >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=${var.app_name}-${var.env}-cluster >> /etc/ecs/ecs.config
 EOF
   )}"
 
@@ -42,7 +42,7 @@ EOF
     resource_type = "instance"
 
     tags = {
-      Name = "${var.env}-instance"
+      Name = "${app_name}-${var.env}-instance"
     }
   }
 }
