@@ -2,7 +2,7 @@
   {
     "essential": true,
     "memory": 256,
-    "name": "${app_image_1}-${app_name}-${env}-td",
+    "name": "${app_name}-${env}-td-${app_image_1}",
     "cpu": 2,
     "image": "${ecr_url}:${app_image_1}-${app_tag}",
     "portMappings": [
@@ -17,7 +17,7 @@
   {
     "essential": true,
     "memory": 256,
-    "name": "${app_image_2}-${app_name}-${env}-td",
+    "name": "${app_name}-${env}-td-${app_image_2}",
     "cpu": 2,
     "image": "${ecr_url}:${app_image_2}-${app_tag}",
     "portMappings": [
