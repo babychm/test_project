@@ -4,7 +4,7 @@
     "memory": 256,
     "name": "${app_name}-${env}-${app_image_1}",
     "cpu": 2,
-    "image": "${ecr_url}:${app_image_1}-${app_tag}",
+    "image": "${ecr_url}:${app_image_1}-td",
     "portMappings": [
       {
         "hostPort": 4000,
@@ -17,7 +17,7 @@
   {
     "essential": true,
     "memory": 256,
-    "name": "${app_name}-${env}-${app_image_2}",
+    "name": "${app_name}-${env}-td",
     "cpu": 2,
     "image": "${ecr_url}:${app_image_2}-${app_tag}",
     "portMappings": [
