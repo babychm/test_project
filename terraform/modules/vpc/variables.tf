@@ -20,10 +20,9 @@ variable "public_subnets" {
     cidr = string
   }))
 }
-/*variable "private_subnets" {
+variable "private_subnets" {
   type = map(object({
     az   = string
     cidr = string
   }))
 }
-*/

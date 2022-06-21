@@ -28,10 +28,10 @@ variable "repository_url" {
 
 variable "vpc_id" {}
 
-/*variable "private_subnets_ids" {
+variable "private_subnets_ids" {
   type = list(any)
 }
-*/
+
 variable "public_subnets_ids" {}
 
 variable "github_repo" {
