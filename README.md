@@ -1,20 +1,30 @@
-# Simple CI/CD built by Terraform for ToDo app
-[`Source`](https://github.com/ibrahima92/fullstack-typescript-mern-todo) of the application that been deployed
+# Simple CI/CD built by Terraform for two environments using AWS VPC, Codebuild, ECR, and ECS  
+[`Source`](https://github.com/ibrahima92/fullstack-typescript-mern-todo) of application that been deployed
 ## Project tools
 
 - Terraform
 - AWS as cloud provider
   - ECR as registry for docker images
   - ECS as a service for for working application
-  - CodeBuild as a tool for CI\CD integration
+  - CodeBuild as a tool for CI/CD integration
   - S3 as a service for storage remote state for terraform
 - GitHub as SCM service
 
 ## Each project environment contains:
 
+- 2 public subnets
+- 2 private subnets
+- Internet getaway
+- 2 NAT
+- Application load balancer
+- Autoscaling group
+- EC2 instance for init build
+- Codebuild
+- ECR and ECS
+
 ![](img/1.png)
 
-### CI/CD
+## CI/CD
 
 ![](img/2.png)
 
@@ -74,13 +84,13 @@ aws_secret_access_key = your_secret_access_key
 ~/.aws/config
 ```
 [default]
-region = your_aws_region # must be the same as a region in  terragrunt.hcl file
+region = your_aws_region
 ```
 or run in terminal
 ```
 export AWS_ACCESS_KEY_ID=your_access_key_id
 export AWS_SECRET_ACCESS_KEY=your_secret_access_key
-export AWS_REGION=your_aws_region # must be the same as a region in  terragrunt.hcl file
+export AWS_REGION=your_aws_region
 ```
 5. Create two files terraform/dev/secret.rfvars and terraform/prod/secret.tfvars
 ```
