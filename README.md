@@ -1,16 +1,16 @@
-# Simple CI/CD built by Terraform for two environments using AWS VPC, Codebuild, ECR, and ECS  
+# Simple CI/CD built by Terraform for ToDo app
+[`Source`](https://github.com/ibrahima92/fullstack-typescript-mern-todo) of the application that been deployed
+## Project tools
 
-### each project environment contains:
+- Terraform
+- AWS as cloud provider
+  - ECR as registry for docker images
+  - ECS as a service for for working application
+  - CodeBuild as a tool for CI\CD integration
+  - S3 as a service for storage remote state for terraform
+- GitHub as SCM service
 
-- 2 public subnets
-- 2 private subnets
-- Internet getaway
-- 2 NAT
-- Application load balancer
-- Autoscaling group
-- EC2 instance for init build
-- Codebuild
-- ECR and ECS
+## Each project environment contains:
 
 ![](img/1.png)
 
