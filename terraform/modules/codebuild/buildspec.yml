@@ -34,7 +34,7 @@ phases:
       - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - echo Build started on `date`
       - echo Building the Docker image...
-      - cd  ./test_project/app
+      - cd  "$CODEBUILD_SRC_DIR"/app
       - sed -r "s/image:.*server.*/image:\ ${REPOSITORY_URI}:${IMAGE_1}-${NEW_IMAGE_TAG}/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
       - sed -r "s/image:.*client.*/image:\ ${REPOSITORY_URI}:${IMAGE_2}-${NEW_IMAGE_TAG}/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
       - docker-compose build
