@@ -35,8 +35,8 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - cd  "$CODEBUILD_SRC_DIR"/app
-      - sed -r "s/image:.*server.*/image:\ $REPOSITORY_URI:$IMAGE_1-$NEW_IMAGE_TAG/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
-      - sed -r "s/image:.*client.*/image:\ $REPOSITORY_URI:$IMAGE_2-$NEW_IMAGE_TAG/g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
+      - sed -r "s|image:.*server.*|image:\ $REPOSITORY_URI:$IMAGE_1-$NEW_IMAGE_TAG|g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
+      - sed -r "s|image:.*client.*|image:\ $REPOSITORY_URI:$IMAGE_2-$NEW_IMAGE_TAG|g" docker-compose.yml > changed.yml && mv changed.yml docker-compose.yml
       - docker-compose build
       - docker-compose push
 
