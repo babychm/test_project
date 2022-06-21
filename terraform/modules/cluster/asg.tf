@@ -4,7 +4,8 @@ resource "aws_autoscaling_group" "demo_asg" {
   max_size            = 4
   min_size            = 1
   target_group_arns   = [aws_alb_target_group.tf_tg.arn]
-  vpc_zone_identifier = var.prublic_subnets_ids
+  vpc_zone_identifier = var.public_subnets_ids
+  #  vpc_zone_identifier = var.private_subnets_ids
   launch_template {
     id      = aws_launch_template.demo_asg.id
     version = "$Latest"

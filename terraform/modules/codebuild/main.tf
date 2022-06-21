@@ -104,7 +104,7 @@ resource "aws_codebuild_project" "demo" {
     vpc_id = var.vpc_id
 
     subnets = var.public_subnets_ids
-
+    #subnets = var.private_subnets_ids
     security_group_ids = [aws_security_group.codebuild_sg.id]
   }
 

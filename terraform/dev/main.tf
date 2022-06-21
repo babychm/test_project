@@ -1,27 +1,27 @@
 module "vpc" {
   source = "../modules/vpc"
 
-  app_name        = var.app_name
-  region          = var.region
-  env             = var.env
-  cidr            = var.cidr
-  public_subnets  = var.public_subnets
-  private_subnets = var.private_subnets
+  app_name       = var.app_name
+  region         = var.region
+  env            = var.env
+  cidr           = var.cidr
+  public_subnets = var.public_subnets
+  #  private_subnets = var.private_subnets
 }
 
 module "cluster" {
-  source              = "../modules/cluster"
-  app_name            = var.app_name
-  app_tag             = var.app_tag
-  app_image_1         = var.app_image_1
-  app_image_2         = var.app_image_2
-  env                 = var.env
-  region              = var.region
-  vpc_id              = module.vpc.vpc_id
-  private_subnets_ids = module.vpc.private_subnets_ids
-  public_subnets_ids  = module.vpc.public_subnets_ids
-  instance_type       = var.instance_type
-  github_repo         = var.github_repo
+  source      = "../modules/cluster"
+  app_name    = var.app_name
+  app_tag     = var.app_tag
+  app_image_1 = var.app_image_1
+  app_image_2 = var.app_image_2
+  env         = var.env
+  region      = var.region
+  vpc_id      = module.vpc.vpc_id
+  #private_subnets_ids = module.vpc.private_subnets_ids
+  public_subnets_ids = module.vpc.public_subnets_ids
+  instance_type      = var.instance_type
+  github_repo        = var.github_repo
 
   depends_on = [module.vpc]
 }
@@ -44,14 +44,14 @@ module "init-build" {
 module "codebuild" {
   source = "../modules/codebuild"
 
-  account_id              = var.account_id
-  app_name                = var.app_name
-  app_image_1             = var.app_image_1
-  app_image_2             = var.app_image_2
-  region                  = var.region
-  env                     = var.env
-  vpc_id                  = module.vpc.vpc_id
-  private_subnets_ids     = module.vpc.private_subnets_ids
+  account_id  = var.account_id
+  app_name    = var.app_name
+  app_image_1 = var.app_image_1
+  app_image_2 = var.app_image_2
+  region      = var.region
+  env         = var.env
+  vpc_id      = module.vpc.vpc_id
+  #private_subnets_ids     = module.vpc.private_subnets_ids
   public_subnets_ids      = module.vpc.public_subnets_ids
   repository_url          = module.cluster.repository_url
   github_repo             = var.github_repo
